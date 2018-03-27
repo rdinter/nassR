@@ -1,0 +1,37 @@
+[![Travis-CI Build Status](https://travis-ci.org/rdinter/nassR.svg?branch=master)](https://travis-ci.org/rdinter/nassR)
+
+An alternative for downloading various USDA data from [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) through R. You must sign up for an [API token](https://quickstats.nass.usda.gov/api) from the mentioned website in order for this package to work.
+
+# Install
+
+Development version (needs devtools installed):
+
+``` r
+devtools::install_github("rdinter/nassR")
+```
+
+# Basic Usage
+
+If a query works on the [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) interface, then it will work with the `nassR` package.
+
+There are three basic functions for this package with the first as the workhorse:
+
+1. `nass_data` this will return a data.frame to the specifications of the query from all of the arguments set in the function call. This mimics the simple "GET DATA" command off of [https://quickstats.nass.usda.gov/](https://quickstats.nass.usda.gov/) and requires an API token. There is a 50,000 limit for each call.
+2. `nass_param` returns all of the possible values for a parameter in a query. Helpful to understand how to subset a query if it runs into the 50,000 limit.
+3. `nass_count` returns the number of records for a query. Very useful in conjunction with `nass_param` to determine what queries can return data with a `nass_data` call.
+
+
+## Key Install
+
+``` r
+library(nassR)
+set_nass_key("YOUR_KEY_IN_QUOTATIONS")
+# First time, reload your enviornment so you can use the key without restarting R.
+readRenviron("~/.Renviron")
+# You can check it with:
+Sys.getenv("NASS_KEY")
+```
+
+The above script will add a line to your `.Renviron` file to be re-used whenever you are using the package. If you are not comfortable with that, you can add the following line to your `.Renviron` file manually to produce the same result.
+
+`NASS_KEY='YOUR_KEY_IN_SINGLE_QUOTES'`
