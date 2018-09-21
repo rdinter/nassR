@@ -1,7 +1,7 @@
 #' Helper functions
 #'
 #' @keywords internal
-#' @export check_key check_resposne
+#' @export check_key check_response
 
 
 # Argument List as defaulted null ....
