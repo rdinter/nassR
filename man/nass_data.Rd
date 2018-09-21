@@ -6,11 +6,12 @@
 \usage{
 nass_data(source_desc = NULL, sector_desc = NULL, group_desc = NULL,
   commodity_desc = NULL, short_desc = NULL, domain_desc = NULL,
-  domaincat_desc = NULL, agg_level_desc = NULL, statisticcat_desc = NULL,
-  state_name = NULL, asd_desc = NULL, county_name = NULL,
-  region_desc = NULL, zip_5 = NULL, watershed_desc = NULL, year = NULL,
-  freq_desc = NULL, reference_period_desc = NULL, token = NULL,
-  numeric_vals = FALSE)
+  domaincat_desc = NULL, agg_level_desc = NULL,
+  statisticcat_desc = NULL, state_name = NULL, asd_desc = NULL,
+  county_name = NULL, region_desc = NULL, zip_5 = NULL,
+  watershed_desc = NULL, year = NULL, freq_desc = NULL,
+  reference_period_desc = NULL, token = NULL, numeric_vals = FALSE,
+  ...)
 }
 \arguments{
 \item{source_desc}{"Program" - Source of data ("CENSUS" or "SURVEY"). Census
@@ -66,7 +67,7 @@ to a commodity.}
 
 \item{watershed_desc}{"Watershed" - Name assigned to the HUC.}
 
-\item{year}{"Year" - The numeric year of the data.}
+\item{year}{"Year" - The numeric year of the data and can be either a character or numeric vector. Conditional values are also possible, for example a character vector of ">=1999" will give years greater than or equal to 1999. Right now the logical values can either be greater/less than or equal to with the logical at either the beginning or end of a string with the year.}
 
 \item{freq_desc}{"Period Type" - Length of time covered ("ANNUAL", "SEASON",
 "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one
@@ -79,7 +80,7 @@ freq_desc.}
 which is stored from the \code{\link{set_nass_key}} function. If there is
 no API key stored in the environment, a character string can be provided.}
 
-\item{numeric_vals}{Optional to convert the Value and coefficient of
+\item{numeric_vals}{Optional to convert the year, Value, and coefficient of
 variation (CV \%) to numerics as opposed to defaulted character values.
 Default is to FALSE as some Values have a suppression code. Converting to
 numeric will result in suppressed values to be NA.}
@@ -95,6 +96,14 @@ Sends query to Quickstats API from given parameter values. Data
 \examples{
 
 \dontrun{
-# I DON"T KNOW
+# Get state values in 2012 for all of the values of agricultural land
+nass_data(agg_level_desc = "STATE", year = "2012",
+commodity_desc = "AG LAND", domain_desc = "VALUE")
+}
+
+\dontrun{
+# Get county level values in 2012 for the specific data item of the asset value of agricultural land (including buildings) as measured in dollars
+nass_data(year = 2012, agg_level_desc = "COUNTY",
+short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $")
 }
 }

@@ -41,7 +41,7 @@
 #'   to a commodity.
 #' @param zip_5 "Zip Code" - US Postal Service 5-digit zip code.
 #' @param watershed_desc "Watershed" - Name assigned to the HUC.
-#' @param year "Year" - The numeric year of the data.
+#' @param year "Year" - The numeric year of the data and can be either a character or numeric vector. Conditional values are also possible, for example a character vector of ">=1999" will give years greater than or equal to 1999. Right now the logical values can either be greater/less than or equal to with the logical at either the beginning or end of a string with the year.
 #' @param freq_desc "Period Type" - Length of time covered ("ANNUAL", "SEASON",
 #'   "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one
 #'   month. "POINT IN TIME" is as of a particular day.
@@ -82,10 +82,16 @@ nass_count <- function(source_desc = NULL,
                        year = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
-                       token = NULL){
+                       token = NULL, ...){
 
   token <- check_key(token)
-
+  
+  # Check to see if year used a logical operator
+  year  <- trimws(year)
+  punct <- grepl("[[:punct:]]", year)
+  if (length(punct) == 0) punct <- FALSE
+  punct_year <- as.numeric(gsub("[[:punct:]]", "", year))
+  
   args <- list(source_desc = source_desc,
                sector_desc = sector_desc,
                group_desc = group_desc,
@@ -101,10 +107,33 @@ nass_count <- function(source_desc = NULL,
                region_desc = region_desc,
                zip_5 = zip_5,
                watershed_desc = watershed_desc,
-               year = year,
                freq_desc = freq_desc,
                reference_period_desc = reference_period_desc)
-
+  
+  if (!punct) {
+    args <- append(args, list(year = year))
+  } else if (punct) {
+    # __LE = <= 
+    # __LT = < 
+    # __GT = > 
+    # __GE = >= 
+    # __LIKE = like 
+    # __NOT_LIKE = not like 
+    # __NE = not equal 
+    if (grepl("^=<|^<=", year) | grepl("=>$|>=$", year)) {
+      args <- append(args, list(year__LE = punct_year))
+      }
+    if ((grepl("^<", year) | grepl(">$", year)) & !grepl("=", year)) {
+      args <- append(args, list(year__LT = punct_year))
+      }
+    if (grepl("^=>|^>=", year) | grepl("=<$|<=$", year)) {
+      args <- append(args, list(year__GE = punct_year))
+      }
+    if ((grepl("^>", year) | grepl("<$", year)) & !grepl("=", year)) {
+      args <- append(args, list(year__GT = punct_year))
+      }
+    }
+  
   base_url <- paste0("http://quickstats.nass.usda.gov/api/get_counts/?key=",
                      token, "&")
   full_url <- httr::modify_url(base_url, query = args)

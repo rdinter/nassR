@@ -40,10 +40,16 @@ nass_param <- function(param = NULL,
                        year = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
-                       token = NULL){
+                       token = NULL, ...){
 
   token <- check_key(token)
 
+  # Check to see if year used a logical operator
+  year  <- trimws(year)
+  punct <- grepl("[[:punct:]]", year)
+  if (length(punct) == 0) punct <- FALSE
+  punct_year <- as.numeric(gsub("[[:punct:]]", "", year))
+  
   args <- list(source_desc = source_desc,
                sector_desc = sector_desc,
                group_desc = group_desc,
@@ -59,9 +65,32 @@ nass_param <- function(param = NULL,
                region_desc = region_desc,
                zip_5 = zip_5,
                watershed_desc = watershed_desc,
-               year = year,
                freq_desc = freq_desc,
                reference_period_desc = reference_period_desc)
+  
+  if (!punct) {
+    args <- append(args, list(year = year))
+  } else if (punct) {
+    # __LE = <= 
+    # __LT = < 
+    # __GT = > 
+    # __GE = >= 
+    # __LIKE = like 
+    # __NOT_LIKE = not like 
+    # __NE = not equal 
+    if (grepl("^=<|^<=", year) | grepl("=>$|>=$", year)) {
+      args <- append(args, list(year__LE = punct_year))
+    }
+    if ((grepl("^<", year) | grepl(">$", year)) & !grepl("=", year)) {
+      args <- append(args, list(year__LT = punct_year))
+    }
+    if (grepl("^=>|^>=", year) | grepl("=<$|<=$", year)) {
+      args <- append(args, list(year__GE = punct_year))
+    }
+    if ((grepl("^>", year) | grepl("<$", year)) & !grepl("=", year)) {
+      args <- append(args, list(year__GT = punct_year))
+    }
+  }
 
   base_url <- paste0("http://quickstats.nass.usda.gov/api/get_param_values/",
                      "?key=", token, "&")
