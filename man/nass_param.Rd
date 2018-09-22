@@ -10,7 +10,7 @@ nass_param(param = NULL, source_desc = NULL, sector_desc = NULL,
   statisticcat_desc = NULL, state_name = NULL, asd_desc = NULL,
   county_name = NULL, region_desc = NULL, zip_5 = NULL,
   watershed_desc = NULL, year = NULL, freq_desc = NULL,
-  reference_period_desc = NULL, token = NULL, ...)
+  reference_period_desc = NULL, token = NULL)
 }
 \arguments{
 \item{param}{A valid parameter value. Available names are: source_desc,
@@ -72,7 +72,12 @@ to a commodity.}
 
 \item{watershed_desc}{"Watershed" - Name assigned to the HUC.}
 
-\item{year}{"Year" - The numeric year of the data and can be either a character or numeric vector. Conditional values are also possible, for example a character vector of ">=1999" will give years greater than or equal to 1999. Right now the logical values can either be greater/less than or equal to with the logical at either the beginning or end of a string with the year.}
+\item{year}{"Year" - The numeric year of the data and can be either a
+character or numeric vector. Conditional values are also possible, for
+example a character vector of ">=1999" will give years greater than or
+equal to 1999. Right now the logical values can either be greater/less than
+or equal to with the logical at either the beginning or end of a string
+with the year.}
 
 \item{freq_desc}{"Period Type" - Length of time covered ("ANNUAL", "SEASON",
 "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one

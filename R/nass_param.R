@@ -40,7 +40,7 @@ nass_param <- function(param = NULL,
                        year = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
-                       token = NULL, ...){
+                       token = NULL){
 
   token <- check_key(token)
 
@@ -101,7 +101,7 @@ nass_param <- function(param = NULL,
     temp     <- httr::GET(full_url)
     tt       <- check_response(temp)
 
-    if (is(tt, "list")) {
+    if (methods::is(tt, "list")) {
       param_data <- as.character(unlist(tt))
       } else {
         stop("Parameter entered is not valid")

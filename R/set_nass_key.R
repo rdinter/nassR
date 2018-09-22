@@ -48,10 +48,10 @@ set_nass_key <- function(token = NA, overwrite = NA){
     if(isTRUE(overwrite)){
       message("Your original .Renviron will be backed up and stored in your ",
               "R HOME directory if needed.")
-      oldenv <- read.table(".Renviron", stringsAsFactors = FALSE)
+      oldenv <- utils::read.table(".Renviron", stringsAsFactors = FALSE)
       newenv <- oldenv[-grep("NASS_KEY", oldenv),]
-      write.table(newenv, ".Renviron", quote = FALSE, sep = "\n",
-                  col.names = FALSE, row.names = FALSE)
+      utils::write.table(newenv, ".Renviron", quote = FALSE, sep = "\n",
+                         col.names = FALSE, row.names = FALSE)
     }
     else{
       tv <- readLines(".Renviron")

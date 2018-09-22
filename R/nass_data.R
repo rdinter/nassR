@@ -18,9 +18,10 @@
 #' }
 #'
 #' \dontrun{
-#' # Get county level values in 2012 for the specific data item of the asset value of agricultural land (including buildings) as measured in dollars
-#' nass_data(year = 2012, agg_level_desc = "COUNTY",
-#' short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $")
+#' # Get county level values in 2012 for the specific data item of the asset
+#'  value of agricultural land (including buildings) as measured in dollars
+#'   nass_data(year = 2012, agg_level_desc = "COUNTY",
+#'    short_desc = "AG LAND, INCL BUILDINGS - ASSET VALUE, MEASURED IN $")
 #' }
 
 nass_data <- function(source_desc = NULL,
@@ -42,7 +43,7 @@ nass_data <- function(source_desc = NULL,
                       freq_desc = NULL,
                       reference_period_desc = NULL,
                       token = NULL,
-                      numeric_vals = FALSE, ...){
+                      numeric_vals = FALSE){
 
   token <- check_key(token)
 
@@ -108,7 +109,7 @@ nass_data <- function(source_desc = NULL,
   temp     <- httr::GET(full_url)
   tt       <- check_response(temp)
 
-  if (is(temp$headers, "list")){
+  if (methods::is(temp$headers, "list")) {
     nass <- jsonlite::fromJSON(full_url)
     nass <- nass[["data"]]
     } else {

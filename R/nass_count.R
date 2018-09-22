@@ -41,7 +41,12 @@
 #'   to a commodity.
 #' @param zip_5 "Zip Code" - US Postal Service 5-digit zip code.
 #' @param watershed_desc "Watershed" - Name assigned to the HUC.
-#' @param year "Year" - The numeric year of the data and can be either a character or numeric vector. Conditional values are also possible, for example a character vector of ">=1999" will give years greater than or equal to 1999. Right now the logical values can either be greater/less than or equal to with the logical at either the beginning or end of a string with the year.
+#' @param year "Year" - The numeric year of the data and can be either a
+#'   character or numeric vector. Conditional values are also possible, for
+#'   example a character vector of ">=1999" will give years greater than or
+#'   equal to 1999. Right now the logical values can either be greater/less than
+#'   or equal to with the logical at either the beginning or end of a string
+#'   with the year.
 #' @param freq_desc "Period Type" - Length of time covered ("ANNUAL", "SEASON",
 #'   "MONTHLY", "WEEKLY", "POINT IN TIME"). "MONTHLY" often covers more than one
 #'   month. "POINT IN TIME" is as of a particular day.
@@ -50,6 +55,7 @@
 #' @param token API key, default is to use the value stored in \code{.Renviron}
 #'   which is stored from the \code{\link{set_nass_key}} function. If there is
 #'   no API key stored in the environment, a character string can be provided.
+#' @param \\dots Not used.
 #' @return Number of observations.
 #' @export nass_count
 #' @examples
