@@ -71,6 +71,13 @@ nass_data <- function(source_desc = NULL,
                freq_desc = freq_desc,
                reference_period_desc = reference_period_desc)
   
+  count <- do.call(nass_count, append(args, list(year = year)))
+  
+  if (count > 50000) stop(paste0("Query returns ",
+                                 prettyNum(count, big.mark = ","),
+                                 " records. The limit is 50,000. Subset the ",
+                                 "query to fit within limit. See nass_count()"))
+  
   if (!punct) {
     args <- append(args, list(year = year))
   } else if (punct) {
@@ -95,13 +102,6 @@ nass_data <- function(source_desc = NULL,
     }
   }
   
-  count <- nass_count(... = args)
-
-  if (count > 50000) stop(paste0("Query returns ",
-                                 prettyNum(count, big.mark = ","),
-                                 " records. The limit is 50,000. Subset the ",
-                                 "query to fit within limit. See nass_count()"))
-
   base_url <- paste0("http://quickstats.nass.usda.gov/api/api_GET/?key=",
                      token, "&")
 

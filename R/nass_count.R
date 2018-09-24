@@ -89,6 +89,7 @@ nass_count <- function(source_desc = NULL,
                        freq_desc = NULL,
                        reference_period_desc = NULL,
                        token = NULL, ...){
+  match.call(expand.dots = T)
 
   token <- check_key(token)
   
